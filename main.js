@@ -34,7 +34,7 @@ app.listen(PORT, () => {
 });
 
 app.use(cors({
-  origin: '',
+  origin: 'https://taxi-frontend-chi.vercel.app/',
   methods: ['GET', 'POST', 'DELETE', 'PUT'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
