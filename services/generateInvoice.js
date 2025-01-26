@@ -29,7 +29,7 @@ const generateInvoicePDF = async (trip, format = 'pdf') => {
         const pages = pdfDoc.getPages();
         const firstPage = pages[0];
 
-        console.log(trip);
+        
 
         const invo = {
             car: trip.car,
@@ -97,31 +97,31 @@ const generateInvoicePDF = async (trip, format = 'pdf') => {
     currentY -= lineSpacing;
 
     firstPage.drawText(`Advance:`, { x: leftColumnX, y: currentY, size: 12, font: montserratBoldFont });
-    firstPage.drawText(`₹.${invo.tripAdvance}`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
+    firstPage.drawText(`Rs .${invo.tripAdvance}`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
     currentY -= lineSpacing;
 
     
 
     firstPage.drawText(`Gst %:`, { x: leftColumnX, y: currentY, size: 12, font: montserratBoldFont });
-    firstPage.drawText(`₹.${invo.tripgst}`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
+    firstPage.drawText(`${invo.tripgst}%`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
     currentY -= lineSpacing;
 
     firstPage.drawText(`Gst Amount:`, { x: leftColumnX, y: currentY, size: 12, font: montserratBoldFont });
-    firstPage.drawText(`₹.${invo.tripgstAmt}`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
+    firstPage.drawText(`Rs.${invo.tripgstAmt}`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
     currentY -= lineSpacing;
 
 
     firstPage.drawText(`Discount:`, { x: leftColumnX, y: currentY, size: 12, font: montserratBoldFont });
-    firstPage.drawText(`₹.${invo.discount}`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
+    firstPage.drawText(`Rs.${invo.discount}`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
     currentY -= lineSpacing;
 
 
     firstPage.drawText(`Trip Expense:`, { x: leftColumnX, y: currentY, size: 12, font: montserratBoldFont });
-    firstPage.drawText(`₹.${invo.tripExpense}`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
+    firstPage.drawText(`Rs.${invo.tripExpense}`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
     currentY -= lineSpacing;
     
     firstPage.drawText(`Balance:`, { x: leftColumnX, y: currentY, size: 12, font: montserratBoldFont });
-    firstPage.drawText(`₹.${invo.tripBalance}`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
+    firstPage.drawText(`Rs.${invo.tripBalance}`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
     currentY -= lineSpacing;
 
 
@@ -131,9 +131,8 @@ const generateInvoicePDF = async (trip, format = 'pdf') => {
     const pdfBytes = await pdfDoc.save();
     fs.writeFileSync(outputPath, pdfBytes);
 
-    console.log(`Invoice generated successfully: ${outputPath}`);
-
-     console.log("Generated Invo Object:", invo);
+   
+     return outputPath;
         // Continue with PDF generation...
     } catch (error) {
         console.error("Error in generateInvoicePDF:", error);

@@ -10,7 +10,7 @@ const authMiddleware = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
-        console.log('Decoded Token:', decoded);
+       
         next();
     } catch (error) {
         console.error('Token verification failed:', error);
@@ -24,8 +24,7 @@ const authMiddleware = (req, res, next) => {
 
 // Admin Middleware (restrict access to only admin users)
 const adminMiddleware = (req, res, next) => {
-    console.log('Admin Middleware Triggered');
-    console.log('Checking Admin Role:', req.user.role); // Debugging log
+  
     if (req.user.role !== 'admin') {
         return res.status(403).json({ message: 'Access denied, admin only' });
     }
@@ -34,7 +33,7 @@ const adminMiddleware = (req, res, next) => {
 
 // Driver Middleware (restrict access to only driver users)
 const driverMiddleware = (req, res, next) => {
-    console.log('Checking Driver Role:', req.user.role); // Debugging log
+     // Debugging log
     if (req.user.role !== 'driver') {
         return res.status(403).json({ message: 'Access denied, driver only' });
     }

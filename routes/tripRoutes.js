@@ -369,13 +369,13 @@
             }
 
             // Log changes if car or driver was updated
-            if (isCarChanged && isDriverChanged) {
-                console.log("Both car and driver updated");
-            } else if (isCarChanged) {
-                console.log(`Car updated for trip ${id}`);
-            } else if (isDriverChanged) {
-                console.log(`Driver updated for trip ${id}`);
-            }
+            // if (isCarChanged && isDriverChanged) {
+            //     console.log("Both car and driver updated");
+            // } else if (isCarChanged) {
+            //     console.log(`Car updated for trip ${id}`);
+            // } else if (isDriverChanged) {
+            //     console.log(`Driver updated for trip ${id}`);
+            // }
 
             // Send success response with the updated trip
             res.status(200).json(updatedTrip);
@@ -581,7 +581,7 @@
                 .populate('customer');
     
             if (!pendingTrips.length) {
-                console.log("No pending trips found.");
+                
                 return res.status(404).json({ message: "No trips are pending review" });
             }
             res.status(200).json({ message: "Trips pending review", trips: pendingTrips });
@@ -652,7 +652,7 @@
                 trip.gstPercentage = gstPercentage;
             }
 
-            console.log("Trip balance :" ,balance);
+            
             
             const tripIncome = trip.balance + trip.advance - trip.tripExpense;
             carData.income += tripIncome;
@@ -694,7 +694,7 @@
                 "gstPercentage" : trip.gstPercentage,
                 "gstAmount" : trip.gstAmount,
             };
-            console.log(invo);
+            
     
             const filePath = await generateInvoicePDF(invo);
 

@@ -276,7 +276,7 @@ router.put("/admin/:id", authMiddleware, adminMiddleware, async (req, res) => {
 
 // // Get an invoice for a trip by ID
 router.get("/admin/:id", authMiddleware, adminMiddleware, async (req, res) => {
-  console.log("Trip Id : ",req.params.id);
+
   try {
     const tripId = req.params.id;
     const filePath = path.join(__dirname, `../invoices/invoice_${tripId}.pdf`);
