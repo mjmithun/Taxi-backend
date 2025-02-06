@@ -233,6 +233,55 @@ router.get(
   }
 );
 
+router.get("/admin/date-wise-summary/", authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    if (!startDate || !endDate) {
+      return res.status(400).json({ error: "Both startDate and endDate are required." });
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999); // Ensure the end date includes the entire day
+
+    const dateRangeData = await Income.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: start, $lte: end }, // Filter data within the date range
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalIncome: { $sum: "$tripIncome" },
+          totalDriverExpense: { $sum: "$driverExpense" },
+          totalCarMaintenance: { $sum: "$carMaintenance" },
+          totalExtraExpense: { $sum: "$extraExpense" },
+        },
+      },
+      {
+        $addFields: {
+          totalExpense: {
+            $add: ["$totalDriverExpense", "$totalCarMaintenance", "$totalExtraExpense"],
+          },
+          grossProfit: "$totalIncome",
+          netProfit: {
+            $subtract: [
+              "$totalIncome",
+              { $add: ["$totalDriverExpense", "$totalCarMaintenance", "$totalExtraExpense"] },
+            ],
+          },
+        },
+      },
+    ]);
+
+    res.json(dateRangeData.length > 0 ? dateRangeData[0] : { message: "No data found for the given date range." });
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred while fetching the date-wise summary." });
+  }
+});
+
 // ============================
 // Update Routes
 // ============================
