@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const Income = require('../models/Income');
-const CompanyFinance = require('../models/CompanyFinance');
+const Income = require('../models/incomeModel.js');
+const CompanyFinance = require('../models/companyFinance.js');
 const router = express.Router();
 
 
