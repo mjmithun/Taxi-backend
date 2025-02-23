@@ -5,6 +5,7 @@ const driverRoutes = require("./routes/driverRoutes.js");
 const carRoutes = require("./routes/carRoutes.js");
 const authRoutes = require('./routes/authRoutes.js');
 const tripRoutes = require("./routes/tripRoutes.js");
+const financeRoutes = require("./routes/financeRoutes.js");
 const path = require('path');
 //const invoiceRoutes = require("./routes/invoiceRoutes.js");
 const incomeRoutes = require("./routes/incomeRoutes.js");
@@ -29,6 +30,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/trips', tripRoutes);
 //app.use('/api/invoices',invoiceRoutes);
 app.use('/api/incomes',incomeRoutes);
+app.use('api/finance/',financeRoutes);
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

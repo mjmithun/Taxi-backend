@@ -117,6 +117,32 @@ router.get("/admin/monthly-summary/",
   }
 });
 
+router.get("/admin/monthly-income/:year/:month", authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+      const { year, month } = req.params;
+
+      // Validate year and month
+      const yearNum = parseInt(year);
+      const monthNum = parseInt(month);
+      if (isNaN(yearNum) || isNaN(monthNum) || monthNum < 1 || monthNum > 12) {
+          return res.status(400).json({ error: "Invalid year or month" });
+      }
+
+      const startDate = new Date(yearNum, monthNum - 1, 1);
+      const endDate = new Date(yearNum, monthNum, 0, 23, 59, 59); 
+
+      
+      const incomeData = await Income.find({
+          createdAt: { $gte: startDate, $lte: endDate }
+      }).select("tripIncome extraExpense createdAt");
+
+      res.json(incomeData);
+  } catch (error) {
+      res.status(500).json({ error: "An error occurred while fetching income data." });
+  }
+});
+
+
 router.get(
   "/admin/weekly-summary",
   authMiddleware,
@@ -189,6 +215,7 @@ router.get(
     }
   }
 );
+
 // Get total expense for a specific Income ID
 router.get(
   "/admin/total-expense/:incomeId",
@@ -282,6 +309,9 @@ router.get("/admin/date-wise-summary/", authMiddleware, adminMiddleware, async (
   }
 });
 
+
+
+
 // ============================
 // Update Routes
 // ============================
@@ -344,6 +374,7 @@ router.get("/admin/:id", authMiddleware, adminMiddleware, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 
 module.exports = router;

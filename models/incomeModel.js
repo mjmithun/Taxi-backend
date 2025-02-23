@@ -24,17 +24,17 @@ const incomeSchema = new mongoose.Schema({
     driverExpense: {
         type: Number,
         min: 0,
-        default: 0 // Optional: Set a default value of 0 if no expense is provided
+        default: 0 
     },
     carMaintenance: {
         type: Number,
         min: 0,
-        default: 0 // Optional: Set a default value of 0 if no maintenance is provided
+        default: 0
     },
     extraExpense: {
         type: Number,
         min: 0,
-        default: 0 // Optional: Set a default value of 0 if no extra expense is provided
+        default: 0 
     },
 }, {
     timestamps: true
