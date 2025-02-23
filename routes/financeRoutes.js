@@ -2,11 +2,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Income = require('../models/incomeModel.js');
 const CompanyFinance = require('../models/companyFinance.js');
+const { authMiddleware, adminMiddleware } = require("../authMiddleware.js");
+
 const router = express.Router();
 
 
 
-router.get('/admin/company-finance/prev-balance/:year/:month', async (req, res) => {
+router.get('/admin/company-finance/prev-balance/:year/:month', authMiddleware,adminMiddleware, async (req, res) => {
     try {
         const { year, month } = req.params;
         const yearNum = parseInt(year);
@@ -35,7 +37,7 @@ router.get('/admin/company-finance/prev-balance/:year/:month', async (req, res) 
 });
 
 
-router.post('/admin/company-finance/:year/:month', async (req, res) => {
+router.post('/admin/company-finance/:year/:month',authMiddleware,adminMiddleware, async (req, res) => {
     try {
         const { year, month } = req.params;
         const yearNum = parseInt(year);
@@ -82,7 +84,7 @@ router.post('/admin/company-finance/:year/:month', async (req, res) => {
 });
 
 
-router.get('/admin/company-finance/:year/:month', async (req, res) => {
+router.get('/admin/company-finance/:year/:month', authMiddleware,adminMiddleware,async (req, res) => {
     try {
         const { year, month } = req.params;
         const finance = await CompanyFinance.findOne({ year, month });
@@ -94,7 +96,7 @@ router.get('/admin/company-finance/:year/:month', async (req, res) => {
 });
 
 
-router.get('/admin/company-finance/summary/:year', async (req, res) => {
+router.get('/admin/company-finance/summary/:year', authMiddleware,adminMiddleware, async (req, res) => {
     try {
         const { year } = req.params;
         const yearNum = parseInt(year);

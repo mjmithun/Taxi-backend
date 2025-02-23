@@ -119,28 +119,50 @@ router.get("/admin/monthly-summary/",
 
 router.get("/admin/monthly-income/:year/:month", authMiddleware, adminMiddleware, async (req, res) => {
   try {
-      const { year, month } = req.params;
+    const { year, month } = req.params;
 
-      // Validate year and month
-      const yearNum = parseInt(year);
-      const monthNum = parseInt(month);
-      if (isNaN(yearNum) || isNaN(monthNum) || monthNum < 1 || monthNum > 12) {
-          return res.status(400).json({ error: "Invalid year or month" });
-      }
+    // Validate year and month
+    const yearNum = parseInt(year);
+    const monthNum = parseInt(month);
+    if (isNaN(yearNum) || isNaN(monthNum) || monthNum < 1 || monthNum > 12) {
+      return res.status(400).json({ error: "Invalid year or month" });
+    }
 
-      const startDate = new Date(yearNum, monthNum - 1, 1);
-      const endDate = new Date(yearNum, monthNum, 0, 23, 59, 59); 
+    const startDate = new Date(yearNum, monthNum - 1, 1);
+    const endDate = new Date(yearNum, monthNum, 0, 23, 59, 59); 
 
-      
-      const incomeData = await Income.find({
+    // Use an aggregation pipeline to sum up tripIncome and extraExpense
+    const aggregateResult = await Income.aggregate([
+      {
+        $match: {
           createdAt: { $gte: startDate, $lte: endDate }
-      }).select("tripIncome extraExpense createdAt");
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalTripIncome: { $sum: "$tripIncome" },
+          totalExtraExpense: { $sum: "$extraExpense" }
+        }
+      }
+    ]);
 
-      res.json(incomeData);
+    // If no data is found, return zeros
+    if (aggregateResult.length === 0) {
+      return res.json({ tripIncome: 0, extraExpense: 0 });
+    }
+
+    const resultObj = {
+      tripIncome: aggregateResult[0].totalTripIncome,
+      extraExpense: aggregateResult[0].totalExtraExpense
+    };
+
+    res.json(resultObj);
   } catch (error) {
-      res.status(500).json({ error: "An error occurred while fetching income data." });
+    res.status(500).json({ error: "An error occurred while fetching income data." });
   }
 });
+
 
 
 router.get(
