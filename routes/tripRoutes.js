@@ -693,6 +693,8 @@
                 "tripExpense": trip.tripExpense,
                 "gstPercentage" : trip.gstPercentage,
                 "gstAmount" : trip.gstAmount,
+                "tripStartKm" : trip.startKm,
+                "tripEndKm" : trip.endKm
             };
             
     

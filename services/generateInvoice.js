@@ -43,6 +43,8 @@ const generateInvoicePDF = async (trip, format = 'pdf') => {
             tripEndDate:   new Date(trip.tripEndDate).toLocaleDateString(),
             tripAdvance: trip.tripAdvance,
             tripBalance: trip.tripBalance,
+            tripStartKm : trip.tripStartKm,
+            tripEndKm : trip.tripEndKm,
             tripKm: trip.tripKm,
             tripgst: trip.gstPercentage,
             tripgstAmt: trip.gstAmount,
@@ -90,6 +92,14 @@ const generateInvoicePDF = async (trip, format = 'pdf') => {
 
     firstPage.drawText(`Trip End Date:`, { x: leftColumnX, y: currentY, size: 12, font: montserratBoldFont });
     firstPage.drawText(invo.tripEndDate, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
+    currentY -= lineSpacing;
+
+    firstPage.drawText(`Trip Start Km:`, { x: leftColumnX, y: currentY, size: 12, font: montserratBoldFont });
+    firstPage.drawText(`${invo.tripStartKm} km`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
+    currentY -= lineSpacing;
+
+    firstPage.drawText(`Trip End Km:`, { x: leftColumnX, y: currentY, size: 12, font: montserratBoldFont });
+    firstPage.drawText(`${invo.tripEndKm} km`, { x: rightColumnX, y: currentY, size: 12, font: montserratFont });
     currentY -= lineSpacing;
 
     firstPage.drawText(`Trip Distance:`, { x: leftColumnX, y: currentY, size: 12, font: montserratBoldFont });
