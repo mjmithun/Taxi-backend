@@ -35,8 +35,24 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+
+const allowedOrigins = [
+  'https://taxi-frontend-chi.vercel.app',
+  'https://taxi-frontend-git-main-jayamithuns-projects.vercel.app',
+  'https://taxi-frontend-hzqt0ecu8-jayamithuns-projects.vercel.app'
+];
+
 app.use(cors({
-  origin: 'https://taxi-frontend-chi.vercel.app/',
-  methods: ['GET', 'POST', 'DELETE', 'PUT'],
+  origin: function (origin, callback) {
+   
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  
 }));
